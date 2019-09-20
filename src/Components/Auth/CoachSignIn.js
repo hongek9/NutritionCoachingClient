@@ -67,17 +67,18 @@ const CoachSignIn = (props) => {
 
     const handleSubmitSignIn = (e) => {
         e.preventDefault();
-        fetch("http://localhost:3000/client/signin", {
+        fetch("http://localhost:3000/coach/signin", {
             method: "POST",
-            body: JSON.stringify({client: {username: username, password: password}}),
+            body: JSON.stringify({coach: {username: username, password: password}}),
             headers: new Headers({
                 'Content-Type': 'application/json'
             })
         }).then(res=> res.json())
         .then(data => {
+            console.log(data)
             props.updateToken(data.sessionToken);
         })
-        .catch(err => console.err({Message: err}))
+        .catch(err => console.log({Message: err}))
     } 
 
   return (

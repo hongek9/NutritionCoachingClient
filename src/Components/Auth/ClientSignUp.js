@@ -12,7 +12,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import TextValidator from 'react-material-ui-form-validator'
+import FormHelperText from '@material-ui/core/FormHelperText';
+import OutlinedInput from '@material-ui/core/OutlinedInput'
+import { red } from '@material-ui/core/colors';
+// import TextValidator from 'react-material-ui-form-validator'
 
 
 function Copyright() {
@@ -57,6 +60,9 @@ const useStyles = makeStyles(theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  errorText: {
+    color: red
   }
 }));
 
@@ -73,6 +79,8 @@ const useStyles = makeStyles(theme => ({
     const [email, setEmail] = useState('');
     const [coaches, setCoaches] = useState([]);
     const [coachID, setCoachID] = useState(0);
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
     const fetchCoaches = () => {
         fetch('http://localhost:3000/coach/',{
@@ -122,6 +130,32 @@ const useStyles = makeStyles(theme => ({
         })
         .catch(err => console.err({Message: err}))
     }
+
+    const handleEmailValidation = (e) => {
+      e.preventDefault();
+      if(!e.target.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+        setEmail(e.target.value);
+        setEmailError(true);
+      } else {
+        setEmail(e.target.value);
+        setEmailError(false);
+      }
+    }
+
+    const handlePasswordValidation = (e) => {
+      e.preventDefault();
+      if(e.target.value.length < 5) {
+        setPassword(e.target.value);
+        setPasswordError(true);
+      } else {
+        setPassword(e.target.value);
+        setPasswordError(false);
+      }
+    }
+
+    const handleErrorSubmit = (e) => {
+      e.preventDefault();
+    }
     
     
 
@@ -133,7 +167,7 @@ const useStyles = makeStyles(theme => ({
         <Typography component="h1" variant="h5">
             Sign up
         </Typography>
-        <form onSubmit={handleSubmitSignUp} className={classes.form} noValidate>
+        <form onSubmit={(emailError) || (passwordError) ? handleErrorSubmit : handleSubmitSignUp} className={classes.form} noValidate>
             <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
                 <TextField
@@ -163,15 +197,24 @@ const useStyles = makeStyles(theme => ({
                 />
             </Grid>
             <Grid item xs={12}>
-              <TextValidator
-                label="Email"
-                onChange={e => setEmail(e.target.value)}
-                name="email"
+            {/* <FormControl className={classes.formControl} variant="outlined">
+              <InputLabel htmlFor="component-outlined">
+                Email
+              </InputLabel>
+              <OutlinedInput
+                id="email"
                 value={email}
-                validators={['required', 'isEmail']}
-                errorMessages={['this field is required', 'email is not valid']}
+                onChange={e => handleEmailValidation(e)}
+                labelWidth={labelWidth}
+                required
+                fullWidth
               />
-                {/* <TextField
+              { 
+                (emailError) ? <FormHelperText id="component-error-text">Error: Email is not valid</FormHelperText> : <div></div>
+              }
+              
+            </FormControl> */}
+                <TextField
                 variant="outlined"
                 required
                 fullWidth
@@ -180,8 +223,11 @@ const useStyles = makeStyles(theme => ({
                 name="email"
                 autoComplete="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
-                /> */}
+                onChange={e => handleEmailValidation(e)}
+                />
+                { 
+                (emailError) ? <FormHelperText style={{color: 'red'}}>Error: Email is not valid</FormHelperText> : <div></div>
+                }
             </Grid>
             <Grid item xs={12}>
                 <TextField
@@ -207,8 +253,11 @@ const useStyles = makeStyles(theme => ({
                 id="password"
                 autoComplete="current-password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => handlePasswordValidation(e)}
                 />
+                {
+                  (passwordError) ? <FormHelperText style={{color: 'red'}}>Error: Password must be longer than 5 characters</FormHelperText> : <div></div>
+                }
             </Grid>
             <Grid item xs={12}>
                 <FormControl variant="outlined" className={classes.formControl}>

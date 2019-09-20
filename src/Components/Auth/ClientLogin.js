@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     }
 
     const toggleCoach = (e) => {
-        console.log(props.coachLogin);
+        console.log(props.coach);
         e.preventDefault();
         (props.coach) ? props.setCoach(false) : props.setCoach(true)
     }
@@ -84,7 +84,7 @@ const useStyles = makeStyles(theme => ({
         .then(data => {
             props.updateToken(data.sessionToken);
         })
-        .catch(err => console.err({Message: err}))
+        .catch(err => console.log({Message: err}))
     } 
 
   return (

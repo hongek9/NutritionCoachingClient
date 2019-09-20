@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import MessageTable from './MessageTable';
-import MessageNew from './MessageNew';
+import MessageTable from '../Client/MessageTable';
+import MessageNew from '../Client/MessageNew';
 
 const MessageIndex = (props) => {
     const [messages, setMessages] = useState([]);
 
     const fetchMessages = () => {
-        fetch('http://localhost:3000/message', {
+        fetch(`http://localhost:3000/message/${props.clientID}`, {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',

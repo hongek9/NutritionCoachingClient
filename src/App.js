@@ -29,7 +29,7 @@ function App() {
 
   const protectedView = () => {
     return(
-       (sessionToken === localStorage.getItem('token') && (coach)) ? <ClientIndex /> 
+       (sessionToken === localStorage.getItem('token') && (coach)) ? <ClientIndex token={sessionToken} /> 
        : (sessionToken === localStorage.getItem('token')) ? <NutritionIndex token={sessionToken}  /> 
        : <Auth updateToken={updateToken} coach={coach} setCoach={setCoach} /> 
     )
