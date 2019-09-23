@@ -44,6 +44,8 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#7f78d2",
+    color: "white"
   },
   formControl: {
     margin: theme.spacing(1),
@@ -74,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 
     const handleSubmitSignIn = (e) => {
         e.preventDefault();
-        fetch("http://localhost:3000/client/signin", {
+        fetch("https://ekh-nutritioncoachingwebpage.herokuapp.com/client/signin", {
             method: "POST",
             body: JSON.stringify({client: {username: username, password: password}}),
             headers: new Headers({

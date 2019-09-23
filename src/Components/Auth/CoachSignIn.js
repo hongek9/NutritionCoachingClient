@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 
 function Copyright() {
   return (
@@ -44,6 +45,8 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#7f78d2",
+    color: "white"
   },
   formControl: {
     margin: theme.spacing(1),
@@ -51,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
-  }
+  }, 
 }));
 
 
@@ -67,7 +70,7 @@ const CoachSignIn = (props) => {
 
     const handleSubmitSignIn = (e) => {
         e.preventDefault();
-        fetch("http://localhost:3000/coach/signin", {
+        fetch("https://ekh-nutritioncoachingwebpage.herokuapp.com/coach/signin", {
             method: "POST",
             body: JSON.stringify({coach: {username: username, password: password}}),
             headers: new Headers({
@@ -81,6 +84,7 @@ const CoachSignIn = (props) => {
         .catch(err => console.log({Message: err}))
     } 
 
+    const primaryPurp = deepPurple[700];
   return (
     <div>
         <Container component="main" maxWidth="xs">
@@ -121,7 +125,8 @@ const CoachSignIn = (props) => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
+                // color={primaryPurp}
+
                 className={classes.submit}
             >
                 Sign In

@@ -23,7 +23,7 @@ const MessageNew = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch('http://localhost:3000/message', {
+        fetch('https://ekh-nutritioncoachingwebpage.herokuapp.com/message', {
             method: 'POST',
             body: JSON.stringify({message: {overview: overview}}),
             headers: new Headers({

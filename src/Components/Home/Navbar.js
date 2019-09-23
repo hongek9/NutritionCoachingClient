@@ -15,14 +15,21 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    backgroundColor: "#7f78d2",
+    color: "white"
   },
   button: {
     margin: theme.spacing(1),
-    backgroundColor: "blue"
+    backgroundColor: "white",
+    color: "#7f78d2",
+    fontWeight: "bold"
   },
   input: {
     display: 'none',
   },
+  background: {
+    backgroundColor: "#7f78d2"
+  }
 }));
 
 const Sitebar = (props) => {
@@ -31,7 +38,7 @@ const Sitebar = (props) => {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.background}>
             <Typography variant="h6" className={classes.title}>Nutrition Coaching</Typography>
             <Button variant="contained" onClick={props.clearToken} color="primary" className={classes.button}>Log Out</Button>
         </Toolbar>

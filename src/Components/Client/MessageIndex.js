@@ -6,7 +6,7 @@ const MessageIndex = (props) => {
     const [messages, setMessages] = useState([]);
 
     const fetchMessages = () => {
-        fetch('http://localhost:3000/message', {
+        fetch('https://ekh-nutritioncoachingwebpage.herokuapp.com/message', {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',

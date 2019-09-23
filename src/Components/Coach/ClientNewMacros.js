@@ -22,23 +22,22 @@ const useStyles = makeStyles(theme => ({
       input: {
         display: 'none',
       },
-  }));
+  }))
 
-
-const NutritionEntry = (props) => {
+const ClientNewMacros = (props) => {
     const classes = useStyles()
 
     const [protein, setProtein] = useState(0);
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
-    const [weight, setWeight] = useState(0);
-    const [comment, setComment] = useState('');
+
+    console.log(props.macros)
     
-    const handleSubmit = (e) => {
+    const handleSubmit = (e,id) => {
         e.preventDefault();
-        fetch('https://ekh-nutritioncoachingwebpage.herokuapp.com/nutrition/', {
+        fetch(`https://ekh-nutritioncoachingwebpage.herokuapp.com/macros/${id}`, {
             method: 'POST',
-            body: JSON.stringify({nutrition: {protein: protein, carbs: carbs, fat: fat, weight: weight, comment: comment}}),
+            body: JSON.stringify({macros: {protein: protein, carbs: carbs, fat: fat}}),
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': props.token
@@ -50,11 +49,31 @@ const NutritionEntry = (props) => {
             setProtein(0);
             setCarbs(0);
             setFat(0);
-            setWeight(0);
-            props.fetchNutrition();
+            props.fetchClientMacros(props.clientID);
         })
     }
-    return(
+
+    const handleSubmitUpdate = (e,id) => {
+        e.preventDefault();
+        fetch(`http://localhost:3000/macros/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({macros: {protein: protein, carbs: carbs, fat: fat}}),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': props.token
+            })
+        })
+        .then(res => res.json())
+        .then(logData => {
+            console.log(logData);
+            setProtein(0);
+            setCarbs(0);
+            setFat(0);
+            props.fetchClientMacros(props.clientID);
+        })
+    }
+
+    return (
         <div className={classes.root}>
             <TextField
                 id="outlined-adornment-weight"
@@ -92,35 +111,21 @@ const NutritionEntry = (props) => {
                 endAdornment: <InputAdornment position="end">g</InputAdornment>,
                 }}
             />
-            <TextField
-                id="outlined-adornment-weight"
-                className={clsx(classes.margin, classes.textField)}
-                variant="outlined"
-                label="Weight"
-                value={weight}
-                onChange={e => setWeight(e.target.value)}
-                // helperText="Carbs"
-                InputProps={{
-                endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
-                }}
-            />
-            <TextField
-                id="outlined-adornment-weight"
-                className={clsx(classes.margin, classes.textField)}
-                variant="outlined"
-                label="Comments"
-                value={comment}
-                onChange={e => setComment(e.target.value)}
-                // helperText="Comments"
-            />
-            <label htmlFor="contained-button-file">
-                <Button onClick={e => handleSubmit(e)} variant="contained" component="span" className={classes.button}>
-                Submit
+            {   
+                (props.macros.length > 0) ? 
+                <label htmlFor="contained-button-file">
+                <Button onClick={e => handleSubmitUpdate(e, props.clientID)} variant="contained" component="span" className={classes.button}>
+                Update Macros
                 </Button>
-            </label>
+                </label>
+                : <label htmlFor="contained-button-file">
+                <Button onClick={e => handleSubmit(e,props.clientID)} variant="contained" component="span" className={classes.button}>
+                Set Initial Macros
+                </Button>
+                </label>
+            }
         </div>
-        
     )
-};
+}
 
-export default NutritionEntry;
+export default ClientNewMacros

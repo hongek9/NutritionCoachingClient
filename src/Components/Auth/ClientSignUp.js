@@ -13,7 +13,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import OutlinedInput from '@material-ui/core/OutlinedInput'
 import { red } from '@material-ui/core/colors';
 // import TextValidator from 'react-material-ui-form-validator'
 
@@ -53,6 +52,8 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#7f78d2",
+    color: "white"
   },
   formControl: {
     margin: theme.spacing(1),
@@ -83,7 +84,7 @@ const useStyles = makeStyles(theme => ({
     const [passwordError, setPasswordError] = useState(false);
 
     const fetchCoaches = () => {
-        fetch('http://localhost:3000/coach/',{
+        fetch('https://ekh-nutritioncoachingwebpage.herokuapp.com/coach/',{
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json'

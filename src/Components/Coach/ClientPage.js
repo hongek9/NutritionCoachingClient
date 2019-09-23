@@ -6,13 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import TablePagination from '@material-ui/core/TablePagination';
-
+import Button from '@material-ui/core/Button';
 import ClientMessages from './ClientMessages';
+import ClientMacros from './ClientMacros';
 
-const columns = [
-    { id: 'Messages', label: 'Messages', minWidth: 200 },
-  ];
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,9 +19,6 @@ const useStyles = makeStyles(theme => ({
     },
     table: {
       minWidth: 650,
-    },
-    root: {
-        width: '100%',
     },
     tableWrapper: {
         maxHeight: 407,
@@ -36,21 +30,9 @@ const ClientPage = (props) => {
     const classes = useStyles();
 
     const [clientNutrition, setClientNutrition] = useState([]);
-    const [clientMessage, setClientMessage] = useState([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    function handleChangePage(event, newPage) {
-        setPage(newPage);
-    }
-
-    function handleChangeRowsPerPage(event) {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    }
 
     const fetchClientNutrition = (id) => {
-        fetch(`http://localhost:3000/nutrition/${id}`, {
+        fetch(`https://ekh-nutritioncoachingwebpage.herokuapp.com/nutrition/${id}`, {
             method: 'GET',
             headers: new Headers ({
                 'Content-Type': 'application/json',
@@ -63,26 +45,18 @@ const ClientPage = (props) => {
         props.setSelectedClient(true)
     }
 
-    const fetchClientMessages = (id) => {
-        fetch(`http://localhost:3000/message/${id}`, {
-            method: 'GET',
-            headers: new Headers ({
-                'Content-Type': 'application/json',
-                'Authorization': props.token
-            })
-        })
-        .then(res => res.json())
-        .then(data => {setClientMessage(data); console.log(data)})
-    }
 
     useEffect(() => {
         fetchClientNutrition(props.client.id);
-        fetchClientMessages(props.client.id);
     },[])
 
     return(
         <div>
             <h1>Displaying Data for {props.client.firstName} {props.client.lastName}</h1>
+            <h3>Assigned Macros:</h3>
+            <ClientMacros token={props.token} clientID={props.client.id} />
+            <br />
+            <h3>Client Macros:</h3>
             <Paper className={classes.root}>
                 <Table className={classes.table}>
                     <TableHead>
@@ -113,6 +87,16 @@ const ClientPage = (props) => {
             </Paper>
             <h1>Messages:</h1>
             <ClientMessages token={props.token} clientID={props.client.id} />
+            <br />
+            <br />
+
+            <label htmlFor="contained-button-file">
+                <Button onClick={e => props.setSelectedClient(false)} variant="contained" component="span" className={classes.button}>
+                Back to Client List
+                </Button>
+            </label>
+            <br />
+            <br />
 
         </div>  
     )
